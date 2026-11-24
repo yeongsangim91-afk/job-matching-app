@@ -1,0 +1,62 @@
+\[
+{
+"id": "comp-a",
+"name": "기업 A (혁신 IT)",
+"role": "신입 소프트웨어 개발자",
+"location": "서울",
+"minGpa": 3.2,
+"requiredMajor": "컴퓨터공학과",
+"requiredTech": \["Python", "Java", "자료구조"\],
+"preferredCerts": \["정보처리기사"\],
+"experience": "신입",
+"deadline": "2026.11.30 마감"
+},
+{
+"id": "comp-b",
+"name": "기업 B (플랫폼 테크)",
+"role": "웹 풀스택 개발자",
+"location": "서울",
+"minGpa": 3.0,
+"requiredMajor": "컴퓨터공학과",
+"requiredTech": \["Java", "데이터베이스"\],
+"preferredCerts": \["SQLD"\],
+"experience": "신입",
+"deadline": "2026.12.15 마감"
+},
+{
+"id": "comp-c",
+"name": "기업 C (솔루션즈)",
+"role": "IT 시스템 운용 엔지니어",
+"location": "경기·인천",
+"minGpa": 3.0,
+"requiredMajor": "관련 전공 무관",
+"requiredTech": \["Linux"\],
+"preferredCerts": \["정보처리기사"\],
+"experience": "신입",
+"deadline": "상시 채용"
+},
+{
+"id": "naver",
+"name": "네이버 (NAVER)",
+"role": "SW 개발 신입 공채",
+"location": "경기·성남",
+"minGpa": 3.5,
+"requiredMajor": "컴퓨터공학 관련 전공",
+"requiredTech": \["자료구조", "알고리즘", "Java"\],
+"preferredCerts": \["정보처리기사"\],
+"experience": "신입",
+"deadline": "2026.11.20 마감"
+},
+{
+"id": "kakao",
+"name": "카카오 (Kakao)",
+"role": "클라이언트/백엔드 개발자",
+"location": "판교",
+"minGpa": 3.0,
+"requiredMajor": "전공 무관",
+"requiredTech": \["Python", "알고리즘"\],
+"preferredCerts": \["SQLD"\],
+"experience": "신입",
+"deadline": "2026.12.01 마감"
+}
+\]
