@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>취UP - 나만의 맞춤 커리어 메이트</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* 스크롤바 숨김 처리 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* 전체 뷰포트 높이 고정 및 하단 빈틈 방지 */
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      height: 100vh;
+      height: 100dvh;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #0f172a;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* 스마트폰 세로 화면비 프레임 (하단 여백 없이 100dvh 채움) */
+    #appFrame {
+      width: 100%;
+      max-width: 448px;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100dvh;
+      background-color: #f8fafc;
+    }
+
+    /* 비로그인 블러 처리 스타일 */
+    .guest-blurred {
+      filter: blur(6px) !important;
+      -webkit-filter: blur(6px) !important;
+      pointer-events: none !important;
+      user-select: none !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 flex items-center justify-center p-0 m-0 overflow-hidden text-slate-800">
+
+  <!-- Main Container / 스마트폰 세로 비율 고정 및 하단 여백 없는 웹뷰 프레임 -->
+  <div id="appFrame" class="w-full max-w-md bg-slate-50 shadow-2xl flex flex-col relative overflow-hidden border-0 sm:border-x sm:border-slate-700/60">
+
+    <!-- App Header -->
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white px-5 py-3.5 shadow-lg border-b border-indigo-500/20 flex items-center justify-between shrink-0 z-40">
+      <div class="flex items-center gap-3 min-w-0">
+        <!-- Brand Icon Badge -->
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-[1.5px] shadow-lg shadow-indigo-500/30 shrink-0">
+          <div class="w-full h-full bg-slate-950 rounded-[10.5px] flex items-center justify-center">
+            <i class="fa-solid fa-rocket text-transparent bg-clip-text bg-gradient-to-tr from-cyan-400 via-indigo-300 to-pink-400 text-base"></i>
+          </div>
+        </div>
+        <div class="min-w-0">
+          <!-- Vibrant Trademark Style Brand Title -->
+          <div class="flex items-center gap-1 leading-none">
+            <span class="text-xl font-black tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style="font-family: 'Arial Black', sans-serif;">취</span>
+            <span class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]" style="font-family: 'Arial Black', sans-serif;">UP</span>
+            <span class="text-[9px] font-extrabold text-cyan-400 bg-cyan-950/80 border border-cyan-500/40 px-1 py-0.5 rounded ml-0.5 tracking-tighter">AI</span>
+          </div>
+          <!-- Friendly Subtitle -->
+          <p class="text-[11px] font-medium text-indigo-200/90 mt-1 flex items-center gap-1 truncate">
+            <span>나만의 맞춤 커리어 메이트</span>
+            <span class="text-xs">🎯</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- 동적 로그인/로그아웃 헤더 버튼 -->
+      <div id="headerAuthArea" class="shrink-0">
+        <button type="button" onclick="openLoginModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-xl border border-indigo-400/30 transition flex items-center gap-1.5 shadow-md font-bold">
+          <i class="fa-solid fa-user-shield text-[11px] text-cyan-300"></i> <span>로그인</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Dynamic View Container (남은 세로 공간 100% 채움, 하단 빈틈 제거) -->
+    <main class="flex-1 min-h-0 overflow-y-auto no-scrollbar p-4 pb-2 bg-slate-50 relative" id="mainContainer">
+
+      <!-- ========================================== -->
+      <!-- TAB 1: 🏠 메인 (HOME DASHBOARD) -->
+      <!-- ========================================== -->
+      <section id="tab-home" class="space-y-4">
+        <!-- Welcome & User Greeting Box (비로그인 시 블러 + 로그인 유도 버튼 오버레이) -->
+        <div class="relative rounded-3xl overflow-hidden shadow-lg">
+          <div id="homeGreetingContent" class="guest-blurred bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 text-white p-4 relative overflow-hidden transition-all duration-300">
+            <div class="relative z-10 space-y-2">
+              <div class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] text-indigo-100 border border-white/10">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> AI 역량 분석 완료
+              </div>
+              <h2 class="text-base font-bold"><span id="userGreetingName">커리어메이트</span>님, 반갑습니다! 👋</h2>
+              <p class="text-xs text-indigo-100 leading-relaxed">
+                입력하신 수강 과목과 학점 기반으로 <b class="text-white underline decoration-pink-400">오늘의 추천 기업 3곳</b>이 준비되었습니다.
+              </p>
+            </div>
+            <div class="absolute -right-4 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+          </div>
+
+          <!-- 비로그인 시 상단 인사 박스 블러 오버레이 -->
+          <div id="homeGreetingBlurOverlay" class="absolute inset-0 z-20 bg-slate-900/35 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 text-center">
+            <button type="button" onclick="openLoginModal()" class="px-4 py-2.5 bg-white hover:bg-indigo-50 text-indigo-950 font-extrabold text-xs rounded-2xl shadow-xl border border-indigo-200 transition flex items-center gap-2 active:scale-[0.98]">
+              <i class="fa-solid fa-lock text-indigo-600"></i>
+              <span>로그인 후 취업 정보를 매칭해보세요!</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- My Spec Completion Card (비로그인 시 숨김 / 로그인 시 출력) -->
+        <div id="homeSpecCard" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-line text-indigo-600"></i> 내 스펙 완성도
+            </span>
+            <span class="font-black text-indigo-600" id="homeSpecPercent">75%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div id="homeSpecProgressBar" class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full transition-all duration-500" style="width: 75%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+            <span>자격증 1개 추가 시 <b class="text-indigo-600">+10% UP</b></span>
+            <button type="button" onclick="switchTab('s04')" class="text-indigo-600 font-bold hover:underline flex items-center gap-0.5">
+              마이페이지 이동 <i class="fa-solid fa-chevron-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Action Cards (비회원도 블러 없이 탐색 가능) -->
+        <div class="space-y-2">
+          <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1">
+            <i class="fa-solid fa-bolt text-amber-500"></i> 핵심 추천 & 진단 메뉴
+          </h3>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" onclick="switchTab('s02')" class="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-100 hover:border-indigo-300 p-3.5 rounded-2xl text-left transition group shadow-sm flex flex-col justify-between h-32">
+              <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-indigo-950 mb-0.5">맞춤 기업 찾기</h4>
+                <p class="text-[10px] text-indigo-700/80">내 스펙으로 바로 지원 가능한 채용공고</p>
+              </div>
+            </button>
+
+            <button type="button" onclick="switchTab('s03')" class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 hover:border-purple-300 p-3.5 rounded-2xl text-left transition group shadow-sm flex flex-col justify-between h-32">
+              <div class="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-purple-950 mb-0.5">목표 기업 진단</h4>
+                <p class="text-[10px] text-purple-700/80">네이버/카카오 등 합격 가능성 분석</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Today's Top Matched Jobs List Preview (비회원도 블러 없이 탐색 가능) -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-fire text-rose-500"></i> 실시간 매칭률 TOP 3
+            </h3>
+            <button type="button" onclick="switchTab('s02')" class="text-[11px] text-slate-500 hover:text-indigo-600">전체보기</button>
+          </div>
+          <div id="homeMatchedList" class="space-y-2"></div>
+        </div>
+
+        <!-- Career Insight Tip Banner (비회원도 블러 없이 탐색 가능) -->
+        <div class="bg-slate-800 text-slate-200 p-3.5 rounded-2xl border border-slate-700 text-xs flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="space-y-0.5">
+            <span class="text-[10px] font-bold text-amber-400">취UP AI 합격 팁</span>
+            <p class="text-[11px] text-slate-300">컴퓨터공학과 졸업예정자는 'SQLD' 자격증 추가 시 서류 통과율이 <b>35% 상승</b>합니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: 🎯 맞춤 추천 (S-02 기업 목록) -->
+      <!-- ========================================== -->
+      <section id="tab-s02" class="relative space-y-3.5 hidden min-h-[440px]">
+        <div id="s02Content" class="guest-blurred space-y-3.5 transition-all duration-300">
+          <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">현재 매칭 기준</div>
+              <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mt-0.5 truncate" id="s02SummaryRole">
+                소프트웨어 개발 · 서울
+              </div>
+            </div>
+            <button type="button" onclick="switchTab('s04')" class="px-2.5 py-1.5 text-[11px] font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition border border-indigo-100 shrink-0">
+              마이페이지 수정
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 text-xs">
+            <span class="font-bold text-slate-700 text-xs">S-02. AI 추천 기업 목록 (<span id="recommendCount">5</span>)</span>
+            <select id="sortOption" onchange="renderRecommendations()" class="text-[11px] bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-600 outline-none">
+              <option value="fit">적합도 높은 순</option>
+              <option value="met">충족 조건 많은 순</option>
+            </select>
+          </div>
+
+          <div id="recommendationList" class="space-y-3"></div>
+        </div>
+
+        <!-- 비로그인 시 페이지 전체 블러 오버레이 -->
+        <div data-guest-lock="s02" class="absolute inset-0 z-20 rounded-3xl bg-slate-50/45 flex flex-col items-center justify-center p-6 text-center">
+          <div class="bg-white/95 border border-slate-200 rounded-3xl p-5 shadow-xl space-y-3 max-w-[260px]">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-base">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <p class="text-xs font-bold text-slate-800">맞춤 기업 추천 리스트</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">회원 로그인 후 나에게 딱 맞는 채용 매칭 결과를 확인하세요.</p>
+            <button type="button" onclick="openLoginModal()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition">
+              로그인 후 확인 가능
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: 🔍 목표 진단 (S-03 상세 진단) -->
+      <!-- ========================================== -->
+      <section id="tab-s03" class="relative space-y-3.5 hidden min-h-[440px]">
+        <div id="s03Content" class="guest-blurred space-y-3.5 transition-all duration-300">
+          <div class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm">
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">목표 기업 합격 가능성 진단</label>
+            <div class="relative flex items-center">
+              <input type="text" id="targetSearchInput" placeholder="기업명 검색 (네이버, 카카오, 기업 A 등)"
+                class="w-full text-xs pl-8 pr-16 py-2 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-indigo-500 outline-none transition">
+              <i class="fa-solid fa-magnifying-glass absolute left-2.5 text-slate-400 text-xs"></i>
+              <button type="button" onclick="handleTargetSearch()" class="absolute right-1 px-3 py-1 bg-indigo-600 text-white text-[11px] font-medium rounded-lg hover:bg-indigo-700 transition">
+                진단하기
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs">
+            <button type="button" onclick="switchTab('s02')" class="text-indigo-600 font-medium flex items-center gap-1 text-[11px] hover:underline">
+              <i class="fa-solid fa-arrow-left"></i> 추천 목록으로
+            </button>
+            <span class="text-[10px] text-slate-400">S-03 상세 진단 리포트</span>
+          </div>
+
+          <div id="companyDetailContainer" class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-4"></div>
+        </div>
+
+        <!-- 비로그인 시 페이지 전체 블러 오버레이 -->
+        <div data-guest-lock="s03" class="absolute inset-0 z-20 rounded-3xl bg-slate-50/45 flex flex-col items-center justify-center p-6 text-center">
+          <div class="bg-white/95 border border-slate-200 rounded-3xl p-5 shadow-xl space-y-3 max-w-[260px]">
+            <div class="w-11 h-11 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto text-base">
+              <i class="fa-solid fa-magnifying-glass-chart"></i>
+            </div>
+            <p class="text-xs font-bold text-slate-800">목표 기업 합격 진단</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">회원 로그인 후 목표 기업별 상세 진단 리포트를 열람하세요.</p>
+            <button type="button" onclick="openLoginModal()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition">
+              로그인 후 확인 가능
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 4: 📝 마이페이지 (우측 끝 배치) -->
+      <!-- ========================================== -->
+      <section id="tab-s04" class="relative space-y-4 hidden min-h-[440px]">
+        <div id="s04Content" class="guest-blurred space-y-4 transition-all duration-300">
+          <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-3.5 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="fa-solid fa-user-gear text-sm"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-indigo-950 mb-0.5">마이페이지 & 역량 스펙 관리</h3>
+              <p class="text-[11px] text-indigo-700/80 leading-relaxed">계정 정보 및 역량 스펙을 관리하고 AI 맞춤 추천 결과를 세팅하세요.</p>
+            </div>
+          </div>
+
+          <!-- Inputs Form Card -->
+          <form id="profileForm" onsubmit="handleProfileSubmit(event)" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3.5">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-user-graduate text-indigo-500"></i> 학력 및 기본정보
+              </span>
+              <span class="text-[10px] bg-indigo-50 text-indigo-600 font-semibold px-2 py-0.5 rounded-full">실시간 연동</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">졸업 학교</label>
+                <input type="text" id="inputSchool" value="한국대학교" placeholder="예: ○○대학교" required
+                  class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">학과 / 전공</label>
+                <input type="text" id="inputMajor" value="컴퓨터공학과" placeholder="예: 컴퓨터공학과" required
+                  class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">졸업 상태</label>
+                <select id="inputStatus" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none bg-slate-50/50">
+                  <option value="졸업 예정" selected>졸업 예정</option>
+                  <option value="졸업">졸업</option>
+                  <option value="재학">재학</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">전체 학점</label>
+                <input type="text" id="inputGpa" value="3.8 / 4.5" placeholder="3.5 / 4.5"
+                  class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-certificate text-indigo-500"></i> 핵심 역량 & 자격
+              </span>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">보유 자격증 (쉼표 구분)</label>
+              <input type="text" id="inputCerts" value="정보처리기사, SQLD" placeholder="예: 정보처리기사, SQLD"
+                class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">어학 / 시험 성적</label>
+              <input type="text" id="inputLang" value="TOEIC 850점" placeholder="예: TOEIC 800점"
+                class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">수강 과목 / 보유 기술</label>
+              <input type="text" id="inputCourses" value="자료구조, 알고리즘, Python, Java, 데이터베이스" placeholder="예: 자료구조, Python, Java"
+                class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition bg-slate-50/50">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">희망 직무</label>
+                <select id="inputDesiredRole" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none bg-slate-50/50">
+                  <option value="소프트웨어 개발" selected>소프트웨어 개발</option>
+                  <option value="웹 개발">웹 개발</option>
+                  <option value="데이터 분석">데이터 분석</option>
+                  <option value="IT 엔지니어">IT 엔지니어</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">희망 근무 지역</label>
+                <select id="inputDesiredLoc" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none bg-slate-50/50">
+                  <option value="서울" selected>서울</option>
+                  <option value="경기·인천">경기·인천</option>
+                  <option value="지역 무관">지역 무관</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition active:scale-[0.99]">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> 스펙 저장 및 추천 반영하기
+            </button>
+          </form>
+
+          <!-- 마이페이지 하단 계정 관리 및 법적 고지 버튼 영역 -->
+          <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/85 space-y-3 pt-4">
+            <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5 pb-1 border-b border-slate-100">
+              <i class="fa-solid fa-shield-halved text-indigo-600"></i> 계정 및 약관 관리
+            </h4>
+
+            <button type="button" onclick="handleLogout()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm rounded-xl shadow transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-right-from-bracket"></i> 로그아웃
+            </button>
+
+            <button type="button" onclick="handleWithdrawal()" class="w-full py-3.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-sm rounded-xl border border-rose-200 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-user-xmark"></i> 회원 탈퇴
+            </button>
+
+            <div class="flex justify-center items-center gap-4 pt-2 text-xs text-slate-500 font-medium">
+              <button type="button" onclick="openPolicyModal('terms')" class="hover:text-indigo-600 underline">이용약관</button>
+              <span>|</span>
+              <button type="button" onclick="openPolicyModal('privacy')" class="hover:text-indigo-600 underline">개인정보 취급방침</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 비로그인 시 페이지 전체 블러 오버레이 -->
+        <div data-guest-lock="s04" class="absolute inset-0 z-20 rounded-3xl bg-slate-50/45 flex flex-col items-center justify-center p-6 text-center">
+          <div class="bg-white/95 border border-slate-200 rounded-3xl p-5 shadow-xl space-y-3 max-w-[260px]">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-base">
+              <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <p class="text-xs font-bold text-slate-800">마이페이지 & 스펙 관리</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">회원 로그인 후 학력·자격·수강 스펙을 관리해보세요.</p>
+            <button type="button" onclick="openLoginModal()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition">
+              로그인 후 확인 가능
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (비로그인 상태에서도 탐색 가능 / 마이페이지 우측 끝 배치) -->
+    <nav id="bottomNav" class="bg-white border-t border-slate-200/80 px-2 pt-2 pb-2 flex justify-around items-center z-40 text-[10px] font-medium shrink-0">
+      <button type="button" onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center gap-1 text-indigo-600 flex-1 py-1 transition">
+        <i class="fa-solid fa-house text-base"></i>
+        <span>홈 (메인)</span>
+      </button>
+      <button type="button" onclick="switchTab('s02')" id="nav-s02" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-600 flex-1 py-1 transition">
+        <i class="fa-solid fa-bullseye text-base"></i>
+        <span>맞춤 추천</span>
+      </button>
+      <button type="button" onclick="switchTab('s03')" id="nav-s03" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-600 flex-1 py-1 transition">
+        <i class="fa-solid fa-magnifying-glass-chart text-base"></i>
+        <span>목표 진단</span>
+      </button>
+      <button type="button" onclick="switchTab('s04')" id="nav-s04" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-600 flex-1 py-1 transition">
+        <i class="fa-solid fa-user-gear text-base"></i>
+        <span>마이페이지</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- 닉네임/이메일 로그인 모달 (DOM에 유지되며 openLoginModal() 호출 시 출력) -->
+  <div id="loginModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-slate-100">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-user-lock text-indigo-600"></i> 익명 보호 로그인
+        </h3>
+        <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-[11px] text-slate-500 leading-relaxed">
+        개인정보 보호를 위해 실명 대신 <b>닉네임</b> 또는 <b>이메일 아이디</b>로 로그인해주세요.
+      </p>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-600 mb-1">닉네임 또는 이메일</label>
+          <input type="text" id="loginInputId" placeholder="예: career_mate 또는 user@univ.ac.kr"
+            class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none bg-slate-50">
+        </div>
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button type="button" onclick="closeLoginModal()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition">취소</button>
+        <button type="button" onclick="executeLogin()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition">로그인하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이용약관 / 개인정보 취급방침 모달 -->
+  <div id="policyModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-slate-100 max-h-[80vh] flex flex-col">
+      <div class="flex items-center justify-between shrink-0">
+        <h3 id="policyModalTitle" class="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-file-contract text-indigo-600"></i> 이용약관
+        </h3>
+        <button type="button" onclick="closePolicyModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="policyModalContent" class="text-xs text-slate-600 overflow-y-auto leading-relaxed space-y-2 pr-1 flex-1 bg-slate-50 p-3 rounded-xl border border-slate-100"></div>
+      <button type="button" onclick="closePolicyModal()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition shrink-0">확인</button>
+    </div>
+  </div>
+
+  <!-- 회원 탈퇴 확인 모달 -->
+  <div id="withdrawModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-slate-100">
+      <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> 회원 탈퇴 안내
+      </h3>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        정말 회원 탈퇴하시겠습니까? 입력된 스펙과 로그인 정보가 초기화됩니다.
+      </p>
+      <div class="flex gap-2 pt-2">
+        <button type="button" onclick="closeWithdrawModal()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition">취소</button>
+        <button type="button" onclick="confirmWithdrawal()" class="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition">탈퇴하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-4 py-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">정보가 업데이트되었습니다.</span>
+  </div>
+
+  <script>
+    // Global Profile & Auth State (기본 비로그인 상태로 진입)
+    let currentUser = {
+      isLoggedIn: false,
+      identifier: "게스트"
+    };
+
+    let userProfile = {
+      school: "한국대학교",
+      major: "컴퓨터공학과",
+      status: "졸업 예정",
+      gpa: 3.8,
+      certs: ["정보처리기사", "SQLD"],
+      languages: ["TOEIC 850점"],
+      courses: ["자료구조", "알고리즘", "Python", "Java", "데이터베이스"],
+      desiredRole: "소프트웨어 개발",
+      desiredLoc: "서울"
+    };
+
+    // Master Companies Database
+    const companiesDB = [
+      {
+        id: "comp-a",
+        name: "기업 A (혁신 IT)",
+        role: "신입 소프트웨어 개발자",
+        location: "서울",
+        minGpa: 3.2,
+        requiredMajor: "컴퓨터공학과",
+        requiredTech: ["Python", "Java", "자료구조"],
+        preferredCerts: ["정보처리기사"],
+        experience: "신입",
+        deadline: "2026.11.30 마감"
+      },
+      {
+        id: "comp-b",
+        name: "기업 B (플랫폼 테크)",
+        role: "웹 풀스택 개발자",
+        location: "서울",
+        minGpa: 3.0,
+        requiredMajor: "컴퓨터공학과",
+        requiredTech: ["Java", "데이터베이스"],
+        preferredCerts: ["SQLD"],
+        experience: "신입",
+        deadline: "2026.12.15 마감"
+      },
+      {
+        id: "comp-c",
+        name: "기업 C (솔루션즈)",
+        role: "IT 시스템 운용 엔지니어",
+        location: "경기·인천",
+        minGpa: 3.0,
+        requiredMajor: "관련 전공 무관",
+        requiredTech: ["Linux"],
+        preferredCerts: ["정보처리기사"],
+        experience: "신입",
+        deadline: "상시 채용"
+      },
+      {
+        id: "naver",
+        name: "네이버 (NAVER)",
+        role: "SW 개발 신입 공채",
+        location: "경기·성남",
+        minGpa: 3.5,
+        requiredMajor: "컴퓨터공학 관련 전공",
+        requiredTech: ["자료구조", "알고리즘", "Java"],
+        preferredCerts: ["정보처리기사"],
+        experience: "신입",
+        deadline: "2026.11.20 마감"
+      },
+      {
+        id: "kakao",
+        name: "카카오 (Kakao)",
+        role: "클라이언트/백엔드 개발자",
+        location: "판교",
+        minGpa: 3.0,
+        requiredMajor: "전공 무관",
+        requiredTech: ["Python", "알고리즘"],
+        preferredCerts: ["SQLD"],
+        experience: "신입",
+        deadline: "2026.12.01 마감"
+      }
+    ];
+
+    let currentSelectedCompanyId = "comp-a";
+    let activeTabId = "home";
+
+    function showToast(msg) {
+      try {
+        const toast = document.getElementById('toast');
+        const msgEl = document.getElementById('toastMsg');
+        if (!toast || !msgEl) return;
+        msgEl.innerText = msg;
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 2300);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // 로그인 상태에 따른 홈 블러 / 스펙카드 노출 / 탭 블러 상태 반영
+    function applyAuthAccessUI() {
+      const isLoggedIn = currentUser.isLoggedIn;
+
+      // 1. 홈 상단 인사 박스 블러 & 버튼 제어
+      const greetingContent = document.getElementById('homeGreetingContent');
+      const greetingOverlay = document.getElementById('homeGreetingBlurOverlay');
+      if (greetingContent && greetingOverlay) {
+        greetingContent.classList.toggle('guest-blurred', !isLoggedIn);
+        greetingOverlay.classList.toggle('hidden', isLoggedIn);
+      }
+
+      // 2. 홈 '내 스펙 완성도' 카드 비로그인 시 숨김 / 로그인 시 출력
+      const specCard = document.getElementById('homeSpecCard');
+      if (specCard) {
+        specCard.classList.toggle('hidden', !isLoggedIn);
+      }
+
+      // 3. 맞춤 추천(s02), 목표 진단(s03), 마이페이지(s04) 페이지 블러 & '로그인 후 확인 가능' 버튼 제어
+      ['s02', 's03', 's04'].forEach(tabKey => {
+        const contentEl = document.getElementById(`${tabKey}Content`);
+        const overlayEl = document.querySelector(`[data-guest-lock="${tabKey}"]`);
+        if (contentEl && overlayEl) {
+          contentEl.classList.toggle('guest-blurred', !isLoggedIn);
+          overlayEl.classList.toggle('hidden', isLoggedIn);
+        }
+      });
+    }
+
+    // Header Auth UI Renderer
+    function updateHeaderAuthUI() {
+      const authArea = document.getElementById('headerAuthArea');
+      const greetElem = document.getElementById('userGreetingName');
+      if (!authArea) return;
+
+      if (currentUser.isLoggedIn) {
+        if (greetElem) greetElem.innerText = currentUser.identifier;
+        authArea.innerHTML = `
+          <button type="button" onclick="handleLogout()" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1.5 shadow-md font-bold">
+            <i class="fa-solid fa-right-from-bracket text-rose-400"></i> <span>로그아웃</span>
+          </button>
+        `;
+      } else {
+        if (greetElem) greetElem.innerText = "커리어메이트";
+        authArea.innerHTML = `
+          <button type="button" onclick="openLoginModal()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-xl border border-indigo-400/30 transition flex items-center gap-1.5 shadow-md font-bold">
+            <i class="fa-solid fa-user-shield text-[11px] text-cyan-300"></i> <span>로그인</span>
+          </button>
+        `;
+      }
+
+      applyAuthAccessUI();
+    }
+
+    // Login Modal Controls
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function executeLogin() {
+      const inputEl = document.getElementById('loginInputId');
+      const inputVal = inputEl ? inputEl.value.trim() : "";
+      if (!inputVal) {
+        showToast("닉네임이나 이메일을 입력해주세요!");
+        return;
+      }
+      currentUser.isLoggedIn = true;
+      currentUser.identifier = inputVal;
+
+      updateHeaderAuthUI();
+      closeLoginModal();
+      showToast(`환영합니다, ${currentUser.identifier}님!`);
+      switchTab(activeTabId || 'home');
+    }
+
+    // Logout & Withdrawal Handlers
+    function handleLogout() {
+      currentUser.isLoggedIn = false;
+      currentUser.identifier = "게스트";
+      updateHeaderAuthUI();
+      showToast("로그아웃 되었습니다.");
+      switchTab('home');
+    }
+
+    function handleWithdrawal() {
+      const modal = document.getElementById('withdrawModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeWithdrawModal() {
+      const modal = document.getElementById('withdrawModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function confirmWithdrawal() {
+      currentUser.isLoggedIn = false;
+      currentUser.identifier = "게스트";
+      closeWithdrawModal();
+      updateHeaderAuthUI();
+      showToast("회원 탈퇴 처리되었습니다.");
+      switchTab('home');
+    }
+
+    // Policy Modal Controls
+    function openPolicyModal(type) {
+      const modal = document.getElementById('policyModal');
+      const title = document.getElementById('policyModalTitle');
+      const content = document.getElementById('policyModalContent');
+      if (!modal || !title || !content) return;
+
+      if (type === 'terms') {
+        title.innerHTML = `<i class="fa-solid fa-file-contract text-indigo-600"></i> 이용약관`;
+        content.innerHTML = `
+          <p class="font-bold text-slate-800">제1조 (목적)</p>
+          <p>본 약관은 '취UP' (JobUP) 서비스의 이용조건 및 절차, 권리와 책임사항을 규정함을 목적으로 합니다.</p>
+          <p class="font-bold text-slate-800 mt-2">제2조 (익명 보호)</p>
+          <p>본 서비스는 실명 수집을 지양하며, 닉네임과 이메일 아이디를 통한 익명 기반 맞춤 커리어 메이트 서비스를 제공합니다.</p>
+          <p class="font-bold text-slate-800 mt-2">제3조 (서비스 이용)</p>
+          <p>AI 맞춤 추천 및 진단 결과는 참고용으로 제공되며, 실제 기업 채용 결과와 차이가 있을 수 있습니다.</p>
+        `;
+      } else {
+        title.innerHTML = `<i class="fa-solid fa-shield-halved text-indigo-600"></i> 개인정보 취급방침`;
+        content.innerHTML = `
+          <p class="font-bold text-slate-800">1. 수집하는 개인정보 항목</p>
+          <p>- 필수항목: 닉네임 또는 이메일 아이디 (실명 수집 없음)</p>
+          <p class="font-bold text-slate-800 mt-2">2. 개인정보의 수집 및 이용목적</p>
+          <p>- 사용자 맞춤형 커리어 분석 및 채용 정보 추천 서비스 제공</p>
+          <p class="font-bold text-slate-800 mt-2">3. 개인정보의 보유 및 이용기간</p>
+          <p>- 회원 탈퇴 시 혹은 로그아웃 시 즉시 파기됩니다.</p>
+        `;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closePolicyModal() {
+      const modal = document.getElementById('policyModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Switch active Bottom Tab
+    function switchTab(tabId) {
+      activeTabId = tabId;
+
+      ['home', 's02', 's03', 's04'].forEach(id => {
+        const tabElem = document.getElementById(`tab-${id}`);
+        if (tabElem) tabElem.classList.add('hidden');
+        const navBtn = document.getElementById(`nav-${id}`);
+        if (navBtn) {
+          navBtn.classList.remove('text-indigo-600');
+          navBtn.classList.add('text-slate-400');
+        }
+      });
+
+      const activeTab = document.getElementById(`tab-${tabId}`);
+      if (activeTab) activeTab.classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('text-indigo-600');
+      }
+
+      if (tabId === 'home') renderHomeDashboard();
+      if (tabId === 's02') renderRecommendations();
+      if (tabId === 's03') renderCompanyDetail(currentSelectedCompanyId);
+
+      applyAuthAccessUI();
+
+      const mainContainer = document.getElementById('mainContainer');
+      if (mainContainer) mainContainer.scrollTop = 0;
+    }
+
+    function updateProfileFromInputs() {
+      const sch = document.getElementById('inputSchool');
+      if (sch) userProfile.school = sch.value.trim();
+      const maj = document.getElementById('inputMajor');
+      if (maj) userProfile.major = maj.value.trim();
+      const st = document.getElementById('inputStatus');
+      if (st) userProfile.status = st.value;
+
+      const gpaStr = document.getElementById('inputGpa')?.value || "3.8";
+      const gpaMatch = gpaStr.match(/([0-9.]+)/);
+      userProfile.gpa = gpaMatch ? parseFloat(gpaMatch[1]) : 3.5;
+
+      const certsElem = document.getElementById('inputCerts');
+      if (certsElem) userProfile.certs = certsElem.value.split(',').map(s => s.trim()).filter(Boolean);
+      const langElem = document.getElementById('inputLang');
+      if (langElem) userProfile.languages = langElem.value.split(',').map(s => s.trim()).filter(Boolean);
+      const crsElem = document.getElementById('inputCourses');
+      if (crsElem) userProfile.courses = crsElem.value.split(',').map(s => s.trim()).filter(Boolean);
+      const roleElem = document.getElementById('inputDesiredRole');
+      if (roleElem) userProfile.desiredRole = roleElem.value;
+      const locElem = document.getElementById('inputDesiredLoc');
+      if (locElem) userProfile.desiredLoc = locElem.value;
+    }
+
+    function analyzeCompanyFit(company) {
+      let totalPoints = 0;
+      let metRequirements = [];
+      let missingRequirements = [];
+
+      if (company.requiredMajor.includes("무관")) {
+        totalPoints += 25;
+        metRequirements.push({ title: "전공 무관 충족", level: "ok" });
+      } else if (userProfile.major.includes("컴퓨터") || userProfile.major.includes("소프트웨어")) {
+        totalPoints += 25;
+        metRequirements.push({ title: `관련 전공 (${userProfile.major})`, level: "ok" });
+      } else {
+        totalPoints += 10;
+        missingRequirements.push({ title: "전공 우대 필요", level: "warn" });
+      }
+
+      if (userProfile.gpa >= company.minGpa) {
+        totalPoints += 20;
+        metRequirements.push({ title: `학점 요건 (${userProfile.gpa})`, level: "ok" });
+      } else {
+        totalPoints += 10;
+        missingRequirements.push({ title: `학점 보완 (${company.minGpa} 이상)`, level: "warn" });
+      }
+
+      const userSkills = [...userProfile.courses, ...userProfile.certs];
+      const techMatches = company.requiredTech.filter(tech =>
+        userSkills.some(skill => skill.toLowerCase().includes(tech.toLowerCase()))
+      );
+
+      if (techMatches.length > 0) {
+        techMatches.forEach(t => metRequirements.push({ title: `필수 과목: ${t}`, level: "ok" }));
+        totalPoints += Math.round((techMatches.length / company.requiredTech.length) * 30);
+      }
+
+      const missingTech = company.requiredTech.filter(tech => !techMatches.includes(tech));
+      missingTech.forEach(t => missingRequirements.push({ title: `미수강: ${t}`, level: "warn" }));
+
+      const certMatches = company.preferredCerts.filter(cert =>
+        userProfile.certs.some(uCert => uCert.toLowerCase().includes(cert.toLowerCase()))
+      );
+      if (certMatches.length > 0) {
+        certMatches.forEach(c => metRequirements.push({ title: `우대 자격: ${c}`, level: "ok" }));
+        totalPoints += 25;
+      } else {
+        totalPoints += 15;
+      }
+
+      const fitScore = Math.min(Math.max(totalPoints, 55), 96);
+      return {
+        score: fitScore,
+        metCount: metRequirements.length,
+        missingCount: missingRequirements.length,
+        metRequirements,
+        missingRequirements
+      };
+    }
+
+    function renderHomeDashboard() {
+      updateProfileFromInputs();
+
+      const evaluated = companiesDB.map(c => ({ ...c, analysis: analyzeCompanyFit(c) }))
+        .sort((a, b) => b.analysis.score - a.analysis.score)
+        .slice(0, 3);
+
+      const listContainer = document.getElementById('homeMatchedList');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      evaluated.forEach(comp => {
+        const itemHTML = `
+          <div onclick="openCompanyDetail('${comp.id}')" class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition flex items-center justify-between cursor-pointer">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">${comp.name}</span>
+                <span class="text-[9px] bg-indigo-50 text-indigo-600 font-bold px-1.5 py-0.5 rounded">추천</span>
+              </div>
+              <p class="text-[10px] text-slate-500">${comp.role}</p>
+            </div>
+            <div class="text-right flex items-center gap-2">
+              <div>
+                <span class="text-xs font-black text-indigo-600 block">${comp.analysis.score}%</span>
+                <span class="text-[8px] text-slate-400">매칭도</span>
+              </div>
+              <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+            </div>
+          </div>
+        `;
+        listContainer.insertAdjacentHTML('beforeend', itemHTML);
+      });
+    }
+
+    function renderRecommendations() {
+      updateProfileFromInputs();
+      const summaryElem = document.getElementById('s02SummaryRole');
+      if (summaryElem) {
+        summaryElem.innerHTML = `<i class="fa-solid fa-filter text-indigo-500"></i> ${userProfile.desiredRole} · ${userProfile.desiredLoc}`;
+      }
+
+      const evaluated = companiesDB.map(comp => ({ ...comp, analysis: analyzeCompanyFit(comp) }));
+      const sortOpt = document.getElementById('sortOption')?.value || 'fit';
+      evaluated.sort((a, b) => sortOpt === 'fit' ? b.analysis.score - a.analysis.score : b.analysis.metCount - a.analysis.metCount);
+
+      const listContainer = document.getElementById('recommendationList');
+      const countElem = document.getElementById('recommendCount');
+      if (countElem) countElem.innerText = evaluated.length;
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      evaluated.forEach(comp => {
+        const { score, metCount, missingCount } = comp.analysis;
+        const cardHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="font-bold text-sm text-slate-800 block">${comp.name}</span>
+                <p class="text-xs text-slate-500 font-medium">${comp.role}</p>
+              </div>
+              <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-100">${score}% 매칭</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded-xl text-center text-xs">
+              <div><span class="text-[9px] text-slate-400 block">충족 조건</span><b class="text-emerald-600">${metCount}개</b></div>
+              <div><span class="text-[9px] text-slate-400 block">보완 요건</span><b class="text-amber-600">${missingCount}개</b></div>
+            </div>
+            <button type="button" onclick="openCompanyDetail('${comp.id}')" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-sm transition">
+              상세보기 및 합격 진단
+            </button>
+          </div>
+        `;
+        listContainer.insertAdjacentHTML('beforeend', cardHTML);
+      });
+    }
+
+    function openCompanyDetail(compId) {
+      currentSelectedCompanyId = compId;
+      switchTab('s03');
+    }
+
+    function renderCompanyDetail(compId) {
+      updateProfileFromInputs();
+      const comp = companiesDB.find(c => c.id === compId) || companiesDB[0];
+      const analysis = analyzeCompanyFit(comp);
+      const container = document.getElementById('companyDetailContainer');
+      if (!container) return;
+
+      const metChips = analysis.metRequirements.map(req =>
+        `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-semibold px-2 py-0.5 rounded-md">✅ ${req.title}</span>`
+      ).join(' ');
+
+      const missingChips = analysis.missingRequirements.map(req =>
+        `<span class="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold px-2 py-0.5 rounded-md">⚠️ ${req.title}</span>`
+      ).join(' ');
+
+      container.innerHTML = `
+        <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+          <div>
+            <h2 class="text-base font-bold text-slate-800">${comp.name}</h2>
+            <p class="text-xs text-slate-500">${comp.role}</p>
+          </div>
+          <div class="text-right">
+            <span class="text-xl font-black text-indigo-600">${analysis.score}%</span>
+            <span class="text-[9px] text-slate-400 block">합격 가능성</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h4 class="text-xs font-bold text-slate-800">✅ 충족된 조건</h4>
+          <div class="flex flex-wrap gap-1">${metChips}</div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h4 class="text-xs font-bold text-slate-800">⚠️ 보완이 필요한 조건</h4>
+          <div class="flex flex-wrap gap-1">${missingChips}</div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 space-y-1">
+          <h4 class="text-xs font-bold text-slate-800">💡 AI 로드맵 솔루션</h4>
+          <p class="text-xs text-slate-600 bg-indigo-50/60 p-2.5 rounded-xl">
+            해당 기업은 <b>'${comp.requiredTech.join(', ')}'</b> 과목 지식을 중점 평가합니다. 이번 학기 내 부족 요건을 보완해보세요!
+          </p>
+        </div>
+      `;
+    }
+
+    function handleTargetSearch() {
+      const input = document.getElementById('targetSearchInput');
+      if (!input) return;
+      const query = input.value.trim();
+      if (!query) return;
+      const found = companiesDB.find(c => c.name.toLowerCase().includes(query.toLowerCase()));
+      if (found) {
+        currentSelectedCompanyId = found.id;
+        renderCompanyDetail(found.id);
+        showToast(`'${found.name}' 진단 결과입니다.`);
+      } else {
+        showToast(`'${query}' 검색 결과가 없어 기본 추천 기업으로 안내합니다.`);
+      }
+    }
+
+    function handleProfileSubmit(e) {
+      e.preventDefault();
+      updateProfileFromInputs();
+      showToast("마이페이지(스펙) 정보가 업데이트 되었습니다!");
+      switchTab('home');
+    }
+
+    function initApp() {
+      updateProfileFromInputs();
+      updateHeaderAuthUI();
+      switchTab('home');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
